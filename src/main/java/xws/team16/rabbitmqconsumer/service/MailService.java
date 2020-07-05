@@ -16,12 +16,15 @@ import xws.team16.rabbitmqconsumer.configuration.MailConfiguration;
 import xws.team16.rabbitmqconsumer.dto.MailDTO;
 import xws.team16.rabbitmqconsumer.exception.SendingMailException;
 
+import java.util.Objects;
+
 @Service
 public class MailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
     private Environment environment;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -32,7 +35,7 @@ public class MailService {
         try {
             MailDTO mailDTO = objectMapper.readValue(mail, MailDTO.class);
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(environment.getProperty("spring.mail.username"));
+            message.setFrom(Objects.requireNonNull(environment.getProperty("spring.mail.username")));
             message.setTo(mailDTO.getEmail());
             message.setSubject(mailDTO.getSubject());
             message.setText(mailDTO.getMessage());
