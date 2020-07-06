@@ -42,7 +42,8 @@ public class MailService {
             javaMailSender.send(message);
         } catch (JsonProcessingException exception) {
             throw new SendingMailException("Mail wasn't send. Couldn't read sent info");
+        } catch(Exception e) {
+            e.printStackTrace();
         }
-
     }
 }
